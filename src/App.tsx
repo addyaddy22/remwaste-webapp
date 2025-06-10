@@ -72,7 +72,7 @@ const SkipSelection = () => {
       </header>
 
       {/* Stepper */}
-      <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
+      {/* <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
         {steps.map((step, index) => {
           const Icon = step.icon;
           const isActive = index <= currentStep;
@@ -89,7 +89,48 @@ const SkipSelection = () => {
             </button>
           );
         })}
+      </div> */}
+
+      <div className="flex flex-wrap justify-center items-center gap-4 mb-6 relative">
+        {steps.map((step, index) => {
+          const Icon = step.icon;
+          const isComplete = index < currentStep;
+          const isCurrent = index === currentStep;
+
+          return (
+            <div key={index} className="flex flex-col items-center relative">
+              {/* Connector line between steps */}
+              {index !== 0 && (
+                <div className="absolute -left-1/2 top-1/2 w-full h-1 bg-gray-300 z-0"></div>
+              )}
+
+              <button
+                type="button"
+                onClick={() => setCurrentStep(index)}
+                className={`z-10 relative w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all duration-200 ${isComplete
+                  ? 'bg-green-500 border-green-500 text-white'
+                  : isCurrent
+                    ? 'bg-blue-600 border-blue-600 text-white'
+                    : 'bg-gray-200 border-gray-300 text-gray-500'
+                  }`}
+              >
+                {isComplete ? (
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                ) : (
+                  <Icon className="w-5 h-5" />
+                )}
+              </button>
+
+              <span className="text-xs mt-2 text-center w-24 font-medium text-gray-400">
+                {step.name}
+              </span>
+            </div>
+          );
+        })}
       </div>
+
 
       {/* Skip Grid */}
       <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
@@ -118,8 +159,8 @@ const SkipSelection = () => {
             <div className="mt-4">
               <button
                 className={`w-full py-2 rounded-xl font-semibold text-sm ${selectedSkip === skip
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
                   }`}
               >
                 {selectedSkip === skip ? 'Selected' : 'Select'}
@@ -130,14 +171,23 @@ const SkipSelection = () => {
       </div>
 
       {/* Bottom Navigation */}
-      <div className="fixed inset-x-0 bottom-0 bg-white shadow-t p-4 flex justify-between items-center md:static md:mt-8">
-        <p className="text-gray-600 text-sm">
-          {selectedSkip
-            ? `Selected: ${selectedSkip.size} Yard Skip £${selectedSkip.price_before_vat}, ${selectedSkip.hire_period_days} day hire`
-            : 'No skip selected'}
-        </p>
+      <div className="fixed inset-x-0 bottom-0 bg-white border-t border-gray-200 shadow-lg px-6 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4 z-50 animate-slide-up">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+          <p className="text-gray-800 text-sm font-medium">
+            {selectedSkip
+              ? `${selectedSkip.size} Yard Skip • £${selectedSkip.price_before_vat} • ${selectedSkip.hire_period_days} day hire`
+              : 'No skip selected'}
+          </p>
+          {selectedSkip && (
+            <span className="inline-block text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-md">
+              Road permit may be required
+            </span>
+          )}
+        </div>
         <button
-          className={`px-6 py-3 rounded-full text-white font-semibold ${selectedSkip ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-400 cursor-not-allowed'
+          className={`w-full md:w-auto px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${selectedSkip
+              ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-md'
+              : 'bg-gray-300 text-gray-600 cursor-not-allowed'
             }`}
           disabled={!selectedSkip}
           onClick={() => alert(`Proceeding with: ${selectedSkip?.size}`)}
@@ -146,14 +196,26 @@ const SkipSelection = () => {
         </button>
       </div>
 
+
+
       {/* Modal Popup */}
       {showPopup && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg max-w-sm w-full shadow-lg">
+          <div
+            role="alertdialog"
+            aria-modal="true"
+            aria-labelledby="warning-title"
+            className="bg-white p-6 rounded-lg max-w-sm w-full shadow-lg border-l-4 border-yellow-500"
+          >
             <div className="flex items-start gap-3">
               <ExclamationTriangleIcon className="h-6 w-6 text-yellow-500 mt-1" />
               <div>
-                <h2 className="text-lg font-bold text-yellow-700">Warning</h2>
+                <h2
+                  id="warning-title"
+                  className="text-lg font-bold text-yellow-700"
+                >
+                  Warning
+                </h2>
                 <p className="text-sm text-gray-700 mt-1">
                   Skips of 10 yards or more are not allowed on the road. Please choose a smaller size or place it on private property.
                 </p>
@@ -170,6 +232,7 @@ const SkipSelection = () => {
           </div>
         </div>
       )}
+
     </div>
   );
 };
