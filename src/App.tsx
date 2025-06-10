@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   MapPinIcon,
   TrashIcon,
@@ -9,19 +9,21 @@ import {
 } from '@heroicons/react/24/outline';
 
 type Skip = {
-  size: string;
-  period: string;
-  price: number;
-};
-
-const skipSizes: Skip[] = [
-  { size: '4 Yard Skip', period: '7 days', price: 227 },
-  { size: '6 Yard Skip', period: '14 days', price: 300 },
-  { size: '8 Yard Skip', period: '7 days', price: 325 },
-  { size: '10 Yard Skip', period: '7 days', price: 325 },
-  { size: '12 Yard Skip', period: '14 days', price: 400 },
-  { size: '14 Yard Skip', period: '14 days', price: 450 },
-];
+  id: number
+  size: number
+  hire_period_days: number
+  transport_cost: any
+  per_tonne_cost: any
+  price_before_vat: number
+  vat: number
+  postcode: string
+  area: string
+  forbidden: boolean
+  created_at: string
+  updated_at: string
+  allowed_on_road: boolean
+  allows_heavy_waste: boolean
+}
 
 const steps = [
   { name: 'Postcode', icon: MapPinIcon },
@@ -32,9 +34,27 @@ const steps = [
   { name: 'Payment', icon: CreditCardIcon },
 ];
 
+// Import all skip images dynamically
+const skipImages = import.meta.glob('./assets/*.jpg', { eager: true, import: 'default' });
+
+const getSkipImage = (size: number): string =>
+  (skipImages[`./assets/${size}-yarder-skip.jpg`] as string) || '/fallback.png';
+
+
+
+
 const SkipSelection = () => {
   const [selectedSkip, setSelectedSkip] = useState<Skip | null>(null);
   const [currentStep, setCurrentStep] = useState<number>(2); // Example: step 2 (Skip Size)
+  const [skips, setSkips] = useState<Skip[]>([]);
+
+
+  useEffect(() => {
+    fetch("https://app.wewantwaste.co.uk/api/skips/by-location?postcode=NR32&area=Lowestoft")
+      .then((res) => res.json())
+      .then((data) => setSkips(data))
+      .catch((err) => console.error("Failed to load skips", err));
+  }, []);
 
   const handleSelect = (skip: Skip) => {
     setSelectedSkip(skip);
@@ -72,7 +92,7 @@ const SkipSelection = () => {
 
       {/* Skip Selection Grid */}
       <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-        {skipSizes.map((skip, index) => (
+        {skips.map((skip, index) => (
           <div
             key={index}
             onClick={() => handleSelect(skip)}
@@ -81,13 +101,13 @@ const SkipSelection = () => {
           >
             <div>
               <img
-                src={`https://via.placeholder.com/300x160/efefef/333?text=${encodeURIComponent(skip.size)}`}
-                alt={skip.size}
+                src={getSkipImage(skip.size)}
+                alt={`${skip.size} Yards`}
                 className="rounded-xl mb-4 w-full h-40 object-cover"
               />
-              <h2 className="text-lg font-bold text-gray-800 mb-1">{skip.size}</h2>
-              <p className="text-sm text-gray-500 mb-1">Hire: {skip.period}</p>
-              <p className="text-xl text-blue-600 font-bold">£{skip.price}</p>
+              <h2 className="text-lg font-bold text-gray-800 mb-1">{skip.size} Yard Skip</h2>
+              <p className="text-sm text-gray-500 mb-1">Hire: {skip.hire_period_days} days hire period</p>
+              <p className="text-xl text-blue-600 font-bold">£{skip.price_before_vat}</p>
             </div>
             <div className="mt-4">
               <button
@@ -106,7 +126,7 @@ const SkipSelection = () => {
       {/* Bottom Navigation */}
       <div className="fixed inset-x-0 bottom-0 bg-white shadow-t p-4 flex justify-between items-center md:static md:mt-8">
         <p className="text-gray-600 text-sm">
-          {selectedSkip ? `Selected: ${selectedSkip.size}` : 'No skip selected'}
+          {selectedSkip ? `Selected: ${selectedSkip.size} Yard Skip £${selectedSkip.price_before_vat}, ${selectedSkip.hire_period_days} day hire` : 'No skip selected'}
         </p>
         <button
           className={`px-6 py-3 rounded-full text-white font-semibold ${selectedSkip ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-400 cursor-not-allowed'
