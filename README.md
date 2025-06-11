@@ -1,54 +1,96 @@
 # React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# React  Assessment Submission
 
-Currently, two official plugins are available:
+## 🔧 Project Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This repository contains the solution to the React Developer assessment. The app is built using React (web version), and mimics expected mobile behaviors using responsive layouts and interactivity.
 
-## Expanding the ESLint configuration
+### My Approach
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- I used TypeScript and modern React best practices including functional components and hooks.
+- State management is handled using `useState` and `useEffect`.
+- The app is responsive, optimized for readability, and built with accessibility and scalability in mind.
+- All images and assets are dynamically handled via `import.meta.glob()` for better maintainability.
+- I paid particular attention to UI/UX and used Tailwind CSS for quick prototyping and consistent theming (including dark mode).
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+---
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## `.env` File Note
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Please note that I **did not include a `.env` file** in the GitHub repository because:
+- It is intentionally excluded via `.gitignore` for security reasons.
+- Any values required from the environment (like API keys or base URLs) should be manually added in your local `.env` file during testing.
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+---
+
+## 🗂 Repo Structure
+
+├── public/
+├── src/
+    ├── App.tsx # Main component with logic and rendering
+    ├── types/
+    │ └── Skip.ts # Type definition for Skip object
+    ├── constants/
+    │ └── steps.ts # Step definitions with icons
+    ├── utils/
+    │ └── getSkipImage.ts # Image loader for skips
+    assets/
+    └── *.jpg # Skip size images
+.env # Environment variables
+├── .gitignore
+├── package.json
+└── README.md
+
+
+## Getting Started
+
+### 1. Clone the Repository
+
+
+git clone https://github.com/your-username/skip-selection-app.git
+cd skip-selection-app
+
+### 2. Install Dependencies
+npm install
+
+### 3. Setup Environment Variables
+-Create a .env file in the root
+-add the following: VITE_API_URL=https://app.wewantwaste.co.uk/api
+Note: .env is ignored by .gitignore and was not pushed to GitHub as explained above.
+
+### 4. Start the App
+npm run dev
+
+## Live Preview
+You can preview the working version via CodeSandbox:
+
+## 🌐 CodeSandbox Link
+
+I have created a live preview using [CodeSandbox](https://codesandbox.io), where the project can be tested directly in the browser:
+
+👉 **Live Demo:** [Click to view the app](https://codesandbox.io/p/github/addyaddy22/remwaste-webapp)
+
+
+---
+
+## Extras
+
+### Design Decisions
+
+#### Modularization: 
+  Split type declarations, constants, and utility functions into separate files to improve reusability and maintainability.
+
+#### Environment Variable: 
+  Introduced .env for flexible deployment and secure API URL management.
+
+#### Accessibility: 
+  Added aria roles to modal popup for better screen reader support.
+
+#### Image Loading: 
+  Used import.meta.glob to eagerly load images from assets/.
+
+
+
+
+

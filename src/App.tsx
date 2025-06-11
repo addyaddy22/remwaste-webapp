@@ -13,7 +13,7 @@ const SkipSelection = () => {
   const [warningSkip, setWarningSkip] = useState<Skip | null>(null);
 
   useEffect(() => {
-    fetch("https://app.wewantwaste.co.uk/api/skips/by-location?postcode=NR32&area=Lowestoft")
+    fetch(`${import.meta.env.VITE_API_URL}/skips/by-location?postcode=NR32&area=Lowestoft`)
       .then((res) => res.json())
       .then((data) => setSkips(data))
       .catch((err) => console.error("Failed to load skips", err));
