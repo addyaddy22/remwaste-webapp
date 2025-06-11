@@ -67,30 +67,9 @@ const SkipSelection = () => {
     <div className="min-h-screen w-full bg-gray-900 p-4 md:p-8 font-sans text-white">
       {/* App Bar */}
       <header className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl md:text-4xl font-extrabold text-white">Select Your Skip</h1>
+        <h1 className="text-2xl md:text-4xl font-extrabold text-white">Select Your Skip Size</h1>
         <button className="px-4 py-2 bg-blue-600 text-white rounded-full shadow hover:bg-blue-700 transition">Help</button>
       </header>
-
-      {/* Stepper */}
-      {/* <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
-        {steps.map((step, index) => {
-          const Icon = step.icon;
-          const isActive = index <= currentStep;
-          return (
-            <button
-              key={index}
-              type="button"
-              className={`flex flex-col items-center justify-center min-w-[80px] px-3 py-2 rounded-lg transition ${isActive ? 'bg-blue-600 text-white shadow-lg' : 'bg-gray-200 text-gray-600'
-                } hover:scale-105`}
-              onClick={() => setCurrentStep(index)}
-            >
-              <Icon className="w-5 h-5 md:w-6 md:h-6 mb-1" />
-              <span className="text-xs md:text-sm font-semibold">{step.name}</span>
-            </button>
-          );
-        })}
-      </div> */}
-
       <div className="flex flex-wrap justify-center items-center gap-4 mb-6 relative">
         {steps.map((step, index) => {
           const Icon = step.icon;
@@ -133,7 +112,7 @@ const SkipSelection = () => {
 
 
       {/* Skip Grid */}
-      <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 pb-28">
         {skips.map((skip, index) => (
           <div
             key={index}
