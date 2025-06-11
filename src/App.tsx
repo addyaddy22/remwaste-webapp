@@ -1,44 +1,9 @@
 import { useEffect, useState } from 'react';
-import {
-  MapPinIcon,
-  TrashIcon,
-  CubeIcon,
-  DocumentTextIcon,
-  CalendarIcon,
-  CreditCardIcon,
-  ExclamationTriangleIcon
-} from '@heroicons/react/24/outline';
+import { steps } from './constants/steps';
+import { getSkipImage } from './utils/getSkipImage';
+import type { Skip } from './types/Skip';
+import {  ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
-type Skip = {
-  id: number;
-  size: number;
-  hire_period_days: number;
-  transport_cost: any;
-  per_tonne_cost: any;
-  price_before_vat: number;
-  vat: number;
-  postcode: string;
-  area: string;
-  forbidden: boolean;
-  created_at: string;
-  updated_at: string;
-  allowed_on_road: boolean;
-  allows_heavy_waste: boolean;
-};
-
-const steps = [
-  { name: 'Postcode', icon: MapPinIcon },
-  { name: 'Waste Type', icon: TrashIcon },
-  { name: 'Skip Size', icon: CubeIcon },
-  { name: 'Permit', icon: DocumentTextIcon },
-  { name: 'Date', icon: CalendarIcon },
-  { name: 'Payment', icon: CreditCardIcon },
-];
-
-const skipImages = import.meta.glob('./assets/*.jpg', { eager: true, import: 'default' });
-
-const getSkipImage = (size: number): string =>
-  (skipImages[`./assets/${size}-yarder-skip.jpg`] as string) || '/fallback.png';
 
 const SkipSelection = () => {
   const [selectedSkip, setSelectedSkip] = useState<Skip | null>(null);
@@ -67,7 +32,7 @@ const SkipSelection = () => {
     <div className="min-h-screen w-full bg-gray-900 p-4 md:p-8 font-sans text-white">
       {/* App Bar */}
       <header className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl md:text-4xl font-extrabold text-white">Select Your Skip Size</h1>
+        <h1 className="text-2xl md:text-4xl font-extrabold text-white">Select Your Skip</h1>
         <button className="px-4 py-2 bg-blue-600 text-white rounded-full shadow hover:bg-blue-700 transition">Help</button>
       </header>
       <div className="flex flex-wrap justify-center items-center gap-4 mb-6 relative">
